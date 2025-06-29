@@ -1,0 +1,28 @@
+name: Clone PR
+
+runs:
+  using: "composite"
+  steps:
+    - name: Parse Forgejo payload
+      uses: ./.github/workflows/parse
+
+    - name: Print env vars
+      shell: bash
+      run: |
+        echo "Clone URL: $FORGEJO_CLONE_URL"
+        echo "Number: $FORGEJO_NUMBER"
+        echo "Ref: $FORGEJO_REF"
+        echo "Repository: $FORGEJO_REPOSITORY"
+        echo "Title: $FORGEJO_TITLE"
+
+    - name: Checkout Repo
+      shell: bash
+      run: |
+        while ! git clone "$FORGEJO_CLONE_URL" eden; do
+          echo "Trying clone again..."
+          rm -rf ./eden || true
+        done
+
+        cd eden
+        git reset --hard $FORGEJO_REF
+        git submodule update --init --recursive

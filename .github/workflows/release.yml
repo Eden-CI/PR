@@ -1,0 +1,89 @@
+name: Create PR Release
+
+on:
+  repository_dispatch:
+    types: [pull_request]
+
+jobs:
+  build:
+    name: Build PR
+    uses: ./.github/workflows/pr.yml
+
+  release:
+    name: "Create Release"
+    needs: [build]
+    permissions:
+      actions: read
+      security-events: write
+      contents: write
+      discussions: write  
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+        
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Parse Forgejo payload
+        uses: ./.github/workflows/parse
+
+      - name: Package artifacts nicely
+        run: |
+          set -ex
+
+          mkdir -p artifacts
+
+          for arch in amd64 legacy steamdeck rog-ally aarch64 armv9
+          do
+            cp linux-$arch/*.AppImage "artifacts/Eden-Linux-${FORGEJO_NUMBER}-${FORGEJO_REF}-${arch}.AppImage"
+            # cp linux-$arch/*.AppImage.zsync "artifacts/Eden-Linux-${FORGEJO_NUMBER}-${FORGEJO_REF}-${arch}.AppImage.zsync"
+          done
+
+          cp android/*.apk artifacts/Eden-Android-${FORGEJO_NUMBER}-${FORGEJO_REF}.apk
+
+          for arch in amd64 # arm64
+          do
+            cp windows-$arch/*.zip artifacts/Eden-Windows-${FORGEJO_NUMBER}-${FORGEJO_REF}-${arch}.zip
+          done
+
+          ./body.sh > changelog.md
+
+      - name: Delete Previous Release
+        run: |
+          gh release delete "$FORGEJO_NUMBER" --repo "${GITHUB_REPOSITORY}" --cleanup-tag  -y
+          sleep 5
+        env:
+          GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        continue-on-error: true
+
+      - name: Release (sha)
+        uses: softprops/action-gh-release@v2.2.2
+        with:
+          name: "${{ env.FORGEJO_TITLE }}"
+          tag_name: ${{ env.FORGEJO_NUMBER }}-${{ env.FORGEJO_REF }}
+          body_path: ./changelog.md
+          prerelease: false
+          draft: false
+          generate_release_notes: false
+          fail_on_unmatched_files: false
+          make_latest: true
+          files: |
+            artifacts/*
+
+      - name: Release (PR)
+        uses: softprops/action-gh-release@v2.2.2
+        with:
+          name: "${{ env.FORGEJO_TITLE }}"
+          tag_name: ${{ env.FORGEJO_NUMBER }}
+          body_path: ./changelog.md
+          prerelease: false
+          draft: false
+          generate_release_notes: false
+          fail_on_unmatched_files: false
+          discussion_category_name: "PRs"
+          make_latest: true
+          files: |
+            artifacts/*
