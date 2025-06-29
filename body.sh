@@ -1,8 +1,11 @@
 #!/bin/sh -e
 
-BASE_DOWNLOAD_URL="https://github.com/ForgejoTest/Test/releases/download"
-TAG=${FORGEJO_NUMBER}-${FORGEJO_REF}
-
+BASE_DOWNLOAD_URL="https://github.com/Eden-CI/PR/releases/download"
+if [ "$NO_SHA" = "true" ]; then
+  TAG=${FORGEJO_NUMBER}
+else
+  TAG=${FORGEJO_NUMBER}-${FORGEJO_REF}
+fi
 row() {
   ARCH="$1"
   PRETTY_ARCH="$2"

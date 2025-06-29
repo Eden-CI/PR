@@ -50,6 +50,7 @@ jobs:
           done
 
           ./body.sh > changelog.md
+          NO_SHA=true ./body.sh > nosha-changelog.md
 
       - name: Delete Previous Release
         run: |
@@ -78,7 +79,7 @@ jobs:
         with:
           name: "${{ env.FORGEJO_TITLE }}"
           tag_name: ${{ env.FORGEJO_NUMBER }}
-          body_path: ./changelog.md
+          body_path: ./nosha-changelog.md
           prerelease: false
           draft: false
           generate_release_notes: false
