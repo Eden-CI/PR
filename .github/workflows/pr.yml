@@ -87,17 +87,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up vcpkg cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ github.workspace }}/eden/build/vcpkg_installed
-            ${{ github.workspace }}/eden/build/externals
-            ${{ github.workspace }}/eden/.vcpkg
-          key: ${{ runner.os }}-${{ matrix.arch }}-vcpkg-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.arch }}-vcpkg-
-
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -110,6 +99,17 @@ jobs:
 
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
+
+      - name: Set up vcpkg cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ github.workspace }}/eden/build/vcpkg_installed
+            ${{ github.workspace }}/eden/build/externals
+            ${{ github.workspace }}/eden/.vcpkg
+          key: ${{ runner.os }}-${{ matrix.arch }}-vcpkg-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.arch }}-vcpkg-
 
       - name: Set up MSVC
         uses: ilammy/msvc-dev-cmd@v1
