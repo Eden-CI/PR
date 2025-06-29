@@ -25,8 +25,6 @@ win() {
   echo
 }
 
-echo "# $FORGEJO_TITLE"
-echo
 echo "This is pull request number $FORGEJO_NUMBER, ref \`$FORGEJO_REF\` of Eden."
 echo "The original PR can be found [here]($FORGEJO_PR_URL)."
 echo
