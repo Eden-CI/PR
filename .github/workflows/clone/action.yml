@@ -19,6 +19,8 @@ runs:
       shell: bash
       run: |
         while ! git clone "$FORGEJO_CLONE_URL" eden; do
+          echo "Clone failed!"
+          sleep 5
           echo "Trying clone again..."
           rm -rf ./eden || true
         done
