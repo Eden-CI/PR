@@ -6,7 +6,13 @@ if [ "$NO_SHA" = "true" ]; then
 else
   TAG=${FORGEJO_NUMBER}-${FORGEJO_REF}
 fi
-row() {
+
+if [ "$FORGEJO_TOKEN" = "" ]; then
+  echo "You must supply a Forgejo API Token via the FORGEJO_TOKEN environment variable."
+  exit 1
+fi
+
+linux() {
   ARCH="$1"
   PRETTY_ARCH="$2"
   DESCRIPTION="$3"
@@ -28,9 +34,41 @@ win() {
   echo
 }
 
+PR_API_URL="https://git.eden-emu.dev/api/v1/repos/eden-emu/eden/pulls"
+
+get_pr_json() {
+  curl "${PR_API_URL}/${FORGEJO_NUMBER}" -H "Authorization: token $FORGEJO_TOKEN"
+}
+
+PR_JSON="$(get_pr_json)"
+
+get_pr_description() {
+  echo $PR_JSON | jq -r '.body'
+}
+
+get_pr_title() {
+  echo $PR_JSON | jq -r '.title'
+}
+
+get_pr_url() {
+  echo $PR_JSON | jq -r '.html_url'
+}
+
+changelog() {
+  echo "## Changelog"
+  echo
+  get_pr_description
+  echo
+}
+
+if [ "$GITHUB_ENV" != "" ]; then
+  echo "FORGEJO_TITLE=$(get_pr_title)" >> $GITHUB_ENV
+fi
+
 echo "This is pull request number $FORGEJO_NUMBER, ref \`$FORGEJO_REF\` of Eden."
-echo "The original PR can be found [here]($FORGEJO_PR_URL)."
+echo "The original PR can be found [here]($(get_pr_url))."
 echo
+changelog
 echo "## Notice"
 echo
 echo "These builds are provided **as-is**. They are intended for testers and developers ONLY."
@@ -45,17 +83,17 @@ echo "## Packages"
 echo
 echo "### Linux"
 echo
-echo "Linux packages are packaged via AppImage. Each build is optimized for a specific architecture."
-echo "See the *Description* column for more info."
+echo "Linux packages are distributed via AppImage. Each build is optimized for a specific architecture."
+echo "See the *Description* column for more info. Note that legacy builds will always work on newer systems."
 echo
 echo "| Build | Description |"
 echo "| ----- | ----------- |"
-row legacy "amd64 (legacy)" "For CPUs older than 2013 or so"
-row amd64 "amd64" "For any modern AMD or Intel CPU"
-row steamdeck "Steam Deck" "For Steam Deck and other >= Zen 2 AMD CPUs"
-row rog-ally "ROG Ally X" "For ROG Ally X and other >= Zen 4 AMD CPUs"
-row aarch64 "armv8-a" "For ARM CPUs made in mid-2021 or earlier"
-row armv9 "armv9-a" "For ARM CPUs made in late 2021 or later"
+linux legacy "amd64 (legacy)" "For CPUs older than 2013 or so"
+linux amd64 "amd64" "For any modern AMD or Intel CPU"
+linux steamdeck "Steam Deck" "For Steam Deck and other >= Zen 2 AMD CPUs"
+linux rog-ally "ROG Ally X" "For ROG Ally X and other >= Zen 4 AMD CPUs"
+linux aarch64 "armv8-a" "For ARM CPUs made in mid-2021 or earlier"
+linux armv9 "armv9-a" "For ARM CPUs made in late 2021 or later"
 echo
 echo "### Windows"
 echo

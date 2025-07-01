@@ -49,6 +49,7 @@ jobs:
             cp windows-$arch/*.zip artifacts/Eden-Windows-${FORGEJO_NUMBER}-${FORGEJO_REF}-${arch}.zip
           done
 
+          export FORGEJO_TOKEN=${{ secrets.FORGEJO_TOKEN }}
           ./body.sh > changelog.md
           NO_SHA=true ./body.sh > nosha-changelog.md
 
