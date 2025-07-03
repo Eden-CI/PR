@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -ex
 
 BASE_DOWNLOAD_URL="https://github.com/Eden-CI/PR/releases/download"
 if [ "$NO_SHA" = "true" ]; then
@@ -43,15 +43,15 @@ get_pr_json() {
 PR_JSON="$(get_pr_json)"
 
 get_pr_description() {
-  echo $PR_JSON | jq -r '.body'
+  echo $PR_JSON | jq -r '.body' || echo ""
 }
 
 get_pr_title() {
-  echo $PR_JSON | jq -r '.title'
+  echo $PR_JSON | jq -r '.title' || echo $FORGEJO_TITLE
 }
 
 get_pr_url() {
-  echo $PR_JSON | jq -r '.html_url'
+  echo $PR_JSON | jq -r '.html_url' || echo $FORGEJO_PR_URL
 }
 
 changelog() {
