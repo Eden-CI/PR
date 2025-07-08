@@ -13,7 +13,6 @@ runs:
         echo "Number: $FORGEJO_NUMBER"
         echo "Ref: $FORGEJO_REF"
         echo "Repository: $FORGEJO_REPOSITORY"
-        echo "Title: $FORGEJO_TITLE"
 
     - name: Checkout Repo
       shell: bash
