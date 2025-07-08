@@ -84,12 +84,12 @@ echo "See the *Description* column for more info. Note that legacy builds will a
 echo
 echo "| Build | Description |"
 echo "| ----- | ----------- |"
-linux legacy "amd64 (legacy)" "For CPUs older than 2013 or so"
+#linux legacy "amd64 (legacy)" "For CPUs older than 2013 or so"
 linux amd64 "amd64" "For any modern AMD or Intel CPU"
-linux steamdeck "Steam Deck" "For Steam Deck and other >= Zen 2 AMD CPUs"
-linux rog-ally "ROG Ally X" "For ROG Ally X and other >= Zen 4 AMD CPUs"
+#linux steamdeck "Steam Deck" "For Steam Deck and other >= Zen 2 AMD CPUs"
+#linux rog-ally "ROG Ally X" "For ROG Ally X and other >= Zen 4 AMD CPUs"
 linux aarch64 "armv8-a" "For ARM CPUs made in mid-2021 or earlier"
-linux armv9 "armv9-a" "For ARM CPUs made in late 2021 or later"
+#linux armv9 "armv9-a" "For ARM CPUs made in late 2021 or later"
 echo
 echo "### Windows"
 echo

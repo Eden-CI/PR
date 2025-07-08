@@ -16,14 +16,14 @@ jobs:
       actions: read
       security-events: write
       contents: write
-      discussions: write  
+      discussions: write
 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-        
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
 
@@ -36,7 +36,8 @@ jobs:
 
           mkdir -p artifacts
 
-          for arch in amd64 legacy steamdeck rog-ally aarch64 armv9
+          # for arch in amd64 legacy steamdeck rog-ally aarch64 armv9
+          for arch in amd64 aarch64
           do
             cp linux-$arch/*.AppImage "artifacts/Eden-Linux-${FORGEJO_NUMBER}-${FORGEJO_REF}-${arch}.AppImage"
             # cp linux-$arch/*.AppImage.zsync "artifacts/Eden-Linux-${FORGEJO_NUMBER}-${FORGEJO_REF}-${arch}.AppImage.zsync"

@@ -12,23 +12,23 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-latest
-            arch: legacy
+          # - runs-on: ubuntu-latest
+          #   arch: legacy
 
           - runs-on: ubuntu-latest
             arch: amd64
 
-          - runs-on: ubuntu-latest
-            arch: steamdeck
+          # - runs-on: ubuntu-latest
+          #   arch: steamdeck
 
-          - runs-on: ubuntu-latest
-            arch: rog-ally
+          # - runs-on: ubuntu-latest
+          #   arch: rog-ally
 
           - runs-on: ubuntu-24.04-arm
             arch: aarch64
 
-          - runs-on: ubuntu-24.04-arm
-            arch: armv9
+          # - runs-on: ubuntu-24.04-arm
+          #   arch: armv9
 
     container: ghcr.io/pkgforge-dev/archlinux:latest
 
