@@ -46,7 +46,7 @@ win() {
 #   echo $PR_JSON | jq -r '.body' || echo ""
 # }
 
-# FORGEJo_TITLE() {
+# FORGEJO_TITLE() {
 #   echo $PR_JSON | jq -r '.title' || echo $FORGEJO_TITLE
 # }
 
@@ -60,7 +60,7 @@ changelog() {
 }
 
 if [ "$GITHUB_ENV" != "" ]; then
-  echo "FORGEJO_TITLE=$(FORGEJo_TITLE)" >> $GITHUB_ENV
+  echo "FORGEJO_TITLE=$FORGEJO_TITLE" >> $GITHUB_ENV
 fi
 
 echo "This is pull request number $FORGEJO_NUMBER, ref \`$FORGEJO_REF\` of Eden."
