@@ -41,6 +41,9 @@ jobs:
           chmod +x ./linux/get-dependencies.sh
           ./linux/get-dependencies.sh
 
+      - name: Set build type
+        run: echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
+
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
 
@@ -96,6 +99,10 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           modules: ${{ matrix.qt_modules }}
           cache: 'true'
+
+      - name: Set build type
+        shell: bash
+        run: echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
 
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
