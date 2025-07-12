@@ -81,7 +81,7 @@ jobs:
             arch: amd64
             qt_arch: win64_msvc2022_64
             qt_version: 6.9.1
-            qt_modules: qtmultimedia qtwebengine qtpositioning qtwebchannel
+            qt_modules: qtmultimedia qt5compat
 
           # - runs-on: windows-11-arm
           #   arch: arm64

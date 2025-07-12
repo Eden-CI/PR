@@ -36,6 +36,7 @@ pacman -Syu --noconfirm \
 		nlohmann-json \
 		patchelf \
 		python-pip \
+		qt6-5compat \
 		qt6-multimedia \
 		qt6-tools \
 		qt6-wayland \
