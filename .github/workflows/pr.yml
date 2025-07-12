@@ -41,8 +41,13 @@ jobs:
           chmod +x ./linux/get-dependencies.sh
           ./linux/get-dependencies.sh
 
-      - name: Set build type
-        run: echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
+      - name: Set build variables
+        shell: bash
+        run: |
+          echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
+          echo "DEVEL=true" >> $GITHUB_ENV
+          echo "USE_WEBENGINE=false" >> $GITHUB_ENV
+          echo "USE_MULTIMEDIA=true" >> $GITHUB_ENV
 
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
@@ -55,13 +60,13 @@ jobs:
               sed -i 's/Settings::values\.lru_cache_enabled\.GetValue()/true/' src/core/arm/nce/patcher.h
           fi
 
-          TARGET=appimage DEVEL=true ./.ci/linux/build.sh ${{ matrix.arch }} $(nproc)
+          TARGET=appimage ./.ci/linux/build.sh ${{ matrix.arch }} $(nproc)
 
       - name: Package
         shell: bash
         run: |
           cd eden
-          DEVEL=true ./.ci/linux/package.sh ${{ matrix.arch }}
+          ./.ci/linux/package.sh ${{ matrix.arch }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4.6.2
@@ -100,9 +105,13 @@ jobs:
           modules: ${{ matrix.qt_modules }}
           cache: 'true'
 
-      - name: Set build type
+      - name: Set build variables
         shell: bash
-        run: echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
+        run: |
+          echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
+          echo "DEVEL=true" >> $GITHUB_ENV
+          echo "USE_WEBENGINE=false" >> $GITHUB_ENV
+          echo "USE_MULTIMEDIA=true" >> $GITHUB_ENV
 
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
@@ -134,7 +143,6 @@ jobs:
         run: |
           cd eden
           export PATH="${PATH}:${{ runner.workspace }}/Qt/${{ matrix.qt_version }}/${{ matrix.qt_arch }}/bin"
-          export DEVEL=true
           export WINDEPLOYQT=windeployqt
 
           ./.ci/windows/build.sh
