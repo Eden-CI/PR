@@ -52,14 +52,18 @@ jobs:
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
 
+      - name: Cache Build Deps
+        uses: actions/cache@v4
+        with:
+          path: eden/build/_deps/
+          key: ${{ runner.os }}-${{ matrix.arch }}-cpm-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.arch }}-cpm-
+
       - name: Build
         shell: bash
         run: |
           cd eden
-          if [ "${{ matrix.arch }}" = 'aarch64' ] || [ "${{ matrix.arch }}" = 'armv9' ]; then
-              sed -i 's/Settings::values\.lru_cache_enabled\.GetValue()/true/' src/core/arm/nce/patcher.h
-          fi
-
           TARGET=appimage ./.ci/linux/build.sh ${{ matrix.arch }} $(nproc)
 
       - name: Package
@@ -127,6 +131,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-vcpkg-
 
+      - name: Cache Build Deps
+        uses: actions/cache@v4
+        with:
+          path: eden/build/_deps/
+          key: ${{ runner.os }}-${{ matrix.arch }}-cpm-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.arch }}-cpm-
+
       - name: Set up MSVC
         uses: ilammy/msvc-dev-cmd@v1
         with:
@@ -175,6 +187,14 @@ jobs:
 
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
+
+      # - name: Cache Build Deps
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: eden/build/_deps/
+      #     key: ${{ runner.os }}-${{ matrix.arch }}-cpm-${{ github.run_id }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-${{ matrix.arch }}-cpm-
 
       - name: Build
         run: |
