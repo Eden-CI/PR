@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build PR
-    uses: ./.github/workflows/pr.yml
+    uses: ./.github/workflows/build.yml
 
   release:
     name: "Create Release"
