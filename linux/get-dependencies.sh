@@ -41,6 +41,7 @@ pacman -Syu --noconfirm \
 		qt6-tools \
 		qt6-wayland \
 		qt6-webengine \
+		quazip-qt6 \
 		sdl2 \
 		spirv-headers \
 		strace \
