@@ -47,7 +47,7 @@ jobs:
           echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
           echo "DEVEL=true" >> $GITHUB_ENV
           echo "USE_WEBENGINE=false" >> $GITHUB_ENV
-          echo "USE_MULTIMEDIA=true" >> $GITHUB_ENV
+          echo "USE_MULTIMEDIA=false" >> $GITHUB_ENV
 
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone
@@ -115,7 +115,7 @@ jobs:
           echo "BUILD_TYPE=RelWithDebInfo" >> $GITHUB_ENV
           echo "DEVEL=true" >> $GITHUB_ENV
           echo "USE_WEBENGINE=false" >> $GITHUB_ENV
-          echo "USE_MULTIMEDIA=true" >> $GITHUB_ENV
+          echo "USE_MULTIMEDIA=false" >> $GITHUB_ENV
 
       - name: Get Variables and Clone
         uses: ./.github/workflows/clone

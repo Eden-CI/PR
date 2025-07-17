@@ -36,7 +36,6 @@ pacman -Syu --noconfirm \
 		nlohmann-json \
 		patchelf \
 		python-pip \
-		qt6-multimedia \
 		qt6-tools \
 		qt6-wayland \
 		sdl2 \
@@ -44,9 +43,9 @@ pacman -Syu --noconfirm \
 		strace \
 		unzip \
 		vulkan-headers \
-		vulkan-radeon \
 		vulkan-mesa-layers \
 		vulkan-nouveau \
+		vulkan-radeon \
 		wget \
 		wireless_tools \
 		xcb-util-cursor \
